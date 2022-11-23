@@ -24,19 +24,28 @@ struct ContentView: View {
                 .rotation3DEffect(.degrees(rotation), axis: (x: 1, y: 1, z: 0))
                 .padding()
                 .onTapGesture {
-                    withAnimation(.default) {
-                        rotation += 360 
+                    withAnimation(.interpolatingSpring(stiffness: 10, damping: 2)) {
+                        rotation += 360
                     }
                     randomValue = Int.random(in:1...6)
                 }
         }
         Spacer()
     }
-}
-
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+    func chooseRandom(times:Int) {
+        if times > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                randomValue = Int.random(in: 1...6)
+                chooseRandom(times: 3)
+            }
+        }
+    }
+    
+    
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
     }
 }
+
